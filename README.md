@@ -2,11 +2,18 @@
 
 **Sebastian**
 
-You can use the [editor on GitHub](https://github.com/Alekhine518/r_markdown/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+The following example is taken from the paper [Performance Attribution for Equity Portfolios](https://cran.r-project.org/web/packages/pa/vignettes/pa.pdf) and illustrates the Brinson model ... 
+
+### Dataset
+The following calculations use the the dataset test included in the **pa** package. The dataset looks as follows:
+
+### 
+In order to ... we will run the following steps:
+1. Estimate a linear regression without intercept on all benchmark securities.
+2. Estimate a linear regression without intercept on all portfolio securities.
+3. Calculate Attribution, Selection and Interaction
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
