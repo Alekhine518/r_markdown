@@ -1,13 +1,17 @@
-## Welcome to GitHub Pages
+## Linking Brinson and Factor Attribution
 
-**Sebastian**
-
-The following example is taken from the paper [Performance Attribution for Equity Portfolios](https://cran.r-project.org/web/packages/pa/vignettes/pa.pdf) and illustrates the Brinson model ... 
+The following example, which was taken from Lu and Kane's paper [Performance Attribution for Equity Portfolios](https://cran.r-project.org/web/packages/pa/vignettes/pa.pdf), illustrates that the Brinson model is a special kind of factor model. 
 
 ### Dataset
-The following calculations use the the dataset test included in the **pa** package. The dataset looks as follows:
+The dataset **test**, which we initialize using `data` is included in the **pa** package and looks as follows:
 
-### 
+### Brinson-Fachler
+
+```markdown
+TEST
+```
+
+### Factor-Model 
 In order to ... we will run the following steps:
 1. Estimate a linear regression without intercept on all benchmark securities.
 2. Estimate a linear regression without intercept on all portfolio securities.
