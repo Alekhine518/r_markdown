@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Linking Brinson and Factor Attribution</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Linking Brinson and Factor Attribution</h1>
+
+</div>
+
+
+<p>The following example, which was taken from Lu and Kane’s 2013 paper <a href="https://cran.r-project.org/web/packages/pa/vignettes/pa.pdf">Performance Attribution for Equity Portfolios</a>, illustrates that the Brinson model is a special kind of factor model. The two attribution models are calculated using the <strong>pa</strong> package.</p>
+<div id="dataset" class="section level3">
+<h3>Dataset</h3>
+<p>The dataset <strong>test</strong>, which we initialize using <code>data(test)</code> is included in the <strong>pa</strong> package. It contains all the information necessary for calculating a performance attribution. It is structured as follows:</p>
+<?xml version="1.0" encoding="UTF-8"?>
+<table class="table table-striped table-hover table-bordered table-condensed table-responsive" style="width: auto !important; text-align: right;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+name
+</th>
+<th style="text-align:right;">
+return
+</th>
+<th style="text-align:left;">
+date
+</th>
+<th style="text-align:left;">
+sector
+</th>
+<th style="text-align:right;">
+portfolio
+</th>
+<th style="text-align:right;">
+benchmark
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+43581
+</td>
+<td style="text-align:left;">
+TRANSOCEAN LTD
+</td>
+<td style="text-align:right;">
+0.02343
+</td>
+<td style="text-align:left;">
+2010-01-01
+</td>
+<td style="text-align:left;">
+Energy
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+0.00033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+25345
+</td>
+<td style="text-align:left;">
+SEADRILL
+</td>
+<td style="text-align:right;">
+-0.07905
+</td>
+<td style="text-align:left;">
+2010-01-01
+</td>
+<td style="text-align:left;">
+Energy
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+0.00033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+25441
+</td>
+<td style="text-align:left;">
+SEADRILL (GER-LISTING)
+</td>
+<td style="text-align:right;">
+-0.08667
+</td>
+<td style="text-align:left;">
+2010-01-01
+</td>
+<td style="text-align:left;">
+Energy
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+0.00033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+45326
+</td>
+<td style="text-align:left;">
+DIAMOND OFFSHORE DRILLING INC
+</td>
+<td style="text-align:right;">
+-0.07001
+</td>
+<td style="text-align:left;">
+2010-01-01
+</td>
+<td style="text-align:left;">
+Energy
+</td>
+<td style="text-align:right;">
+0.00333
+</td>
+<td style="text-align:right;">
+0.00033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+46015
+</td>
+<td style="text-align:left;">
+NATIONAL OILWELL VARCO INC
+</td>
+<td style="text-align:right;">
+-0.07235
+</td>
+<td style="text-align:left;">
+2010-01-01
+</td>
+<td style="text-align:left;">
+Energy
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+0.00033
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7550
+</td>
+<td style="text-align:left;">
+CHINA OILFIELD SERVICES-A
+</td>
+<td style="text-align:right;">
+-0.08118
+</td>
+<td style="text-align:left;">
+2010-01-01
+</td>
+<td style="text-align:left;">
+Energy
+</td>
+<td style="text-align:right;">
+0.00333
+</td>
+<td style="text-align:right;">
+0.00033
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="brinson-fachler" class="section level3">
+<h3>Brinson-Fachler</h3>
+<p>Running the code below will present us with the result of the Brinson-Fachler attribution.</p>
+<pre class="r"><code>test.br &lt;- brinson(x = test, date.var = &quot;date&quot;,
+                   cat.var = &quot;sector&quot;,
+                   bench.weight = &quot;benchmark&quot;,
+                   portfolio.weight = &quot;portfolio&quot;,
+                   ret.var = &quot;return&quot;)
+
+returns(test.br)[[2]] </code></pre>
+<?xml version="1.0" encoding="UTF-8"?>
+<table class="table table-striped table-hover table-bordered table-condensed table-responsive" style="width: auto !important; text-align: right;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+2010-01-01
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Allocation Effect
+</td>
+<td style="text-align:right;">
+-0.00034
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Selection Effect
+</td>
+<td style="text-align:right;">
+-0.00425
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Interaction Effect
+</td>
+<td style="text-align:right;">
+0.00101
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Active Return
+</td>
+<td style="text-align:right;">
+-0.00359
+</td>
+</tr>
+</tbody>
+</table>
+<p>The Brinson model test.br shows that the active return of the portfolio, was -0.359%. This return can be decomposed into allocation effect (-0.034%), selection effect (-0.425%), and interaction effect (0.101%).</p>
+</div>
+<div id="factor-model-attribution" class="section level3">
+<h3>Factor-Model: Attribution</h3>
+<p>Conducting a Brinson attribution is similar to running a linear regression without the intercept term. Estimated coecients will then be the mean return of each category of the attributed specified in the universe, a.k.a. the factor return of each category. The equivalent to the allocation effect for the universe in the Brinson model is the sum of the product of the estimated coeficient and the active weight of each category.</p>
+<pre class="r"><code>test.reg &lt;- regress(x =test,
+                    date.var = &quot;date&quot;,
+                    ret.var = &quot;return&quot;,
+                    reg.var = c(&quot;sector&quot;),
+                    benchmark.weight = &quot;benchmark&quot;,
+                    portfolio.weight = &quot;portfolio&quot;)
+summary(test.reg)</code></pre>
+<pre><code>## Period:                              2010-01-01
+## Methodology:                         Regression
+## Securities in the portfolio:         300
+## Securities in the benchmark:         3000
+## 
+## Returns 
+##                  2010-01-01
+## sector             -0.00034
+## Residual           -0.00325
+## Portfolio Return   -0.01621
+## Benchmark Return   -0.01263
+## Active Return      -0.00359</code></pre>
+</div>
+<div id="factor-model-selection" class="section level3">
+<h3>Factor-Model: Selection</h3>
+<p>In order to estimate the selection effect in the Brinson model, one can calculate the mean return of each category within the attribute in both the portfolio and the benchmark under a regression framework and use the benchmark weights to calculate the selection effect.</p>
+<pre class="r"><code>lm.test &lt;- lm(return ~ sector - 1,
+              data = test[test$portfolio != 0, ])
+exposure(test.br, var = &quot;sector&quot;)[ ,2] %*%(lm.test$coefficients - test.reg@coefficients)</code></pre>
+<pre><code>##          [,1]
+## [1,] -0.00425</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

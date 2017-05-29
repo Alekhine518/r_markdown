@@ -1,0 +1,66 @@
+---
+title: "Linking Brinson and Factor Attribution"
+---
+
+```{r echo=FALSE, include=FALSE, cache=FALSE}
+library(pa)
+library(knitr)
+library(kableExtra)
+options(knitr.table.format = "html") 
+```
+
+The following example, which was taken from Lu and Kane's 2013 paper [Performance Attribution for Equity Portfolios](https://cran.r-project.org/web/packages/pa/vignettes/pa.pdf), illustrates that the Brinson model is a special kind of factor model. The two attribution models are calculated using the **pa** package.
+
+### Dataset
+The dataset **test**, which we initialize using `data(test)` is included in the **pa** package. It contains all the information necessary for calculating a performance attribution. It is structured as follows:
+
+```{r echo=F, results = "asis"}
+data(test)
+kable(head(test), digits=5) %>%
+  kable_styling(c("striped", "hover", "bordered", "condensed", "responsive"), 
+                full_width = F, position = "left")
+```
+
+### Brinson-Fachler
+Running the code below will present us with the result of the Brinson-Fachler attribution.   
+```{r results="hide"}
+test.br <- brinson(x = test, date.var = "date",
+                   cat.var = "sector",
+                   bench.weight = "benchmark",
+                   portfolio.weight = "portfolio",
+                   ret.var = "return")
+
+returns(test.br)[[2]] 
+```
+
+```{r echo=F, results = "asis"}
+dt = as.data.frame(returns(test.br)[[2]])
+kable(dt, digits=5) %>%
+  kable_styling(c("striped", "hover", "bordered", "condensed", "responsive"), 
+                full_width = F, position = "left")
+```
+
+The Brinson model test.br shows that the active return of the portfolio, was -0.359%. This return can be decomposed into allocation effect (-0.034%), selection effect (-0.425%), and interaction effect (0.101%).
+
+### Factor-Model: Attribution
+Conducting a Brinson attribution is similar to running a linear regression without the intercept term. Estimated coecients will then be the mean return of each category of the attributed specified in the universe, a.k.a. the factor return of each category.
+The equivalent to the allocation effect for the universe in the Brinson model is the sum of the product of the estimated coeficient and the active weight of each category.
+```{r}
+test.reg <- regress(x =test,
+                    date.var = "date",
+                    ret.var = "return",
+                    reg.var = c("sector"),
+                    benchmark.weight = "benchmark",
+                    portfolio.weight = "portfolio")
+summary(test.reg)
+```
+
+### Factor-Model: Selection
+In order to estimate the selection effect in the Brinson model, one can calculate the mean return of each category within the attribute in both the portfolio and the benchmark under a regression framework and use the benchmark weights to calculate the selection effect. 
+```{r}
+lm.test <- lm(return ~ sector - 1,
+              data = test[test$portfolio != 0, ])
+exposure(test.br, var = "sector")[ ,2] %*%(lm.test$coefficients - test.reg@coefficients)
+```
+
+
